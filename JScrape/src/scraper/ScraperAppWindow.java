@@ -6,18 +6,14 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JFrame;
-import java.awt.BorderLayout;
 import javax.swing.JTextField;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class ScraperAppWindow {
 
@@ -53,8 +49,8 @@ public class ScraperAppWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		int width = 480;
-		int height = 480;
+		int width = 460;
+		int height = 460;
 		sFrame = new JFrame();
 		sFrame.getContentPane().setFont(new Font("SansSerif", Font.PLAIN, 20));
 		sFrame.getContentPane().setLayout(null);
@@ -65,43 +61,43 @@ public class ScraperAppWindow {
 		sFrame.setTitle("JScrape - A Java Based Web Scraper");
 		sFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		sFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(ScraperAppWindow.class.getResource("/resources/icon.png")));
-		
+
 		urlField = new JTextField();
 		urlField.setHorizontalAlignment(SwingConstants.CENTER);
-		urlField.setBounds(width/2-176, height/4-30, 352, 28);
+		urlField.setBounds(width/2-179, height/2-140, 352, 28);
 		urlField.setToolTipText("Enter url...");
 		sFrame.getContentPane().add(urlField);
 		urlField.setColumns(10);
-		
+
 		JLabel urlLabel = new JLabel("Enter url:");
 		urlLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		urlLabel.setBounds(width/2-50, height/4-46, 100, 14);
+		urlLabel.setBounds(width/2-53, height/2-158, 100, 14);
 		sFrame.getContentPane().add(urlLabel);
-		
+
 		xPathField = new JTextField();
 		xPathField.setHorizontalAlignment(SwingConstants.CENTER);
-		xPathField.setBounds(width/2-176, height/2-70, 352, 28);
+		xPathField.setBounds(width/2-179, height/2-56, 352, 28);
 		sFrame.getContentPane().add(xPathField);
 		xPathField.setColumns(10);
 
 		JLabel xPathLabel = new JLabel("Enter XPath:");
 		xPathLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		xPathLabel.setBounds(width/2-50, height/2-86, 100, 14);
+		xPathLabel.setBounds(width/2-53, height/2-74, 100, 14);
 		sFrame.getContentPane().add(xPathLabel);
-		
+
 		fileNameField = new JTextField();
 		fileNameField.setHorizontalAlignment(SwingConstants.CENTER);
-		fileNameField.setBounds(width/2-176, height*3/4-110, 352, 28);
+		fileNameField.setBounds(width/2-179, height/2+28, 352, 28);
 		sFrame.getContentPane().add(fileNameField);
 		fileNameField.setColumns(10);
-		
+
 		JLabel fileNameLabel = new JLabel("Enter file name:");
 		fileNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		fileNameLabel.setBounds(width/2-50, height*3/4-126, 100, 14);
+		fileNameLabel.setBounds(width/2-53, height/2+10, 100, 14);
 		sFrame.getContentPane().add(fileNameLabel);
-		
+
 		JButton scrape = new JButton("Scrape!");
-		scrape.setBounds(width/2-50, height-150, 100, 32);
+		scrape.setBounds(width/2-53, height-140, 100, 32);
 		sFrame.getContentPane().add(scrape);
 		scrape.setEnabled(true);
 		scrape.addMouseListener(new MouseAdapter(){
@@ -113,16 +109,33 @@ public class ScraperAppWindow {
 				} catch(Exception f){
 					System.out.println("Incorrect fields or result not found");
 				}
-				
+
 			}
 		});
 		
-		JLabel scrapeLabel = new JLabel("Your file will be written to your home directory \n "
-				+ "Windows - <root>\\Users\\<username> \n "
-				+ "MacOS - <root>/Users/<username> \n "
-				+ "Linux - /home/<username>");
-		scrapeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		scrapeLabel.setBounds(width/2-150, height-100, 300, 14);
-		sFrame.getContentPane().add(scrapeLabel);
+		JLabel directory = new JLabel("Your file will be written to your home directory");
+		directory.setBounds(width/2-133, height-90, 260, 20);
+		sFrame.getContentPane().add(directory);
+
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 474, 21);
+		sFrame.getContentPane().add(menuBar);
+
+		JMenu file = new JMenu("File");
+		menuBar.add(file);
+
+		JMenuItem help = new JMenuItem("Help");
+		file.add(help);
+		help.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				try{
+					HelpWindow window = new HelpWindow();
+					window.setVisible(true);
+				} catch(Exception f){
+					System.out.println("Help window missing");
+				}
+			}
+		});
 	}
 }
