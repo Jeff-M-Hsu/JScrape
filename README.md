@@ -1,5 +1,5 @@
 # JScrape
-A Java based web scraper
+A Java based web scraper.
 
 Enter a url, XPath, and name of the output file.
 
