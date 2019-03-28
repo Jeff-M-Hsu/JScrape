@@ -55,9 +55,9 @@ public class HelpWindow extends JDialog {
 		usageContent.setContentType("text/html");
 		usageContent.setText("<html><head><style type=\"text/css\">.text{font-family: Tahoma; font-size:13;}</style></head>"
 				+ "<body><table class=\"text\"><tr><td>Url</td><td>https://www.w3schools.com/xml/xpath_syntax.asp</td></tr><br><br>"
-				+ "<tr><td>XPath</td><td>//div[@id=\"sidebar\"]/nav/h3[last()]/span</td></tr><br><br>"
+				+ "<tr><td>XPath</td><td>//div[@id=\"leftmenuinner\"]//h2[last()]/span</td></tr><br><br>"
 				+ "<tr><td>Filename</td><td>link</td></tr><br><br>"
-				+ "<tr><td>Result</td><td>link.txt containing one span element in the last h3 of the nav element in the div with the id \"sidebar\"</td></tr><br><br></table></body></html>");
+				+ "<tr><td>Result</td><td>link.txt containing one span element in the last h2 element in the div with the id \"leftmenuinner\"</td></tr><br><br></table></body></html>");
 		usageContent.setEditable(false);
 		usageContent.setBackground(null);
 		usageContent.setBorder(null);

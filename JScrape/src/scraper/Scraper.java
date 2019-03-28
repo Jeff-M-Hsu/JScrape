@@ -31,16 +31,25 @@ public class Scraper {
 		WebClient client = new WebClient(BrowserVersion.CHROME);
 		client.getOptions().setJavaScriptEnabled(false);
 		try {
+			if(!url.contains("https://")){
+				String addHttps = "https://" + url;
+				url = addHttps;
+			}
 			HtmlPage page = client.getPage(url);
 			List<HtmlElement> list = page.getByXPath(xPath);
 			File textFile = new File(System.getProperty("user.home"), filename + ".txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(textFile));
-			for(int i = 0; i < list.size(); i++){
-				writer.write(list.get(i).asText());
-				writer.write(System.lineSeparator());
+			if(list.size() == 0){
+				writer.write("Could not find anything under XPath: " + xPath);
 			}
-			writer.close();
+			else {
+				for(int i = 0; i < list.size(); i++){
+					writer.write(list.get(i).asText());
+					writer.write(System.lineSeparator());
+				}
 
+				writer.close();
+			}
 		} catch (FailingHttpStatusCodeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

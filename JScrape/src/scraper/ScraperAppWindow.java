@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -14,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import javax.swing.Timer;
 
 public class ScraperAppWindow {
 
@@ -21,6 +26,7 @@ public class ScraperAppWindow {
 	private JTextField urlField;
 	private JTextField xPathField;
 	private JTextField fileNameField;
+	private JLabel finish;
 
 	/**
 	 * Launch the application.
@@ -99,23 +105,38 @@ public class ScraperAppWindow {
 		JButton scrape = new JButton("Scrape!");
 		scrape.setBounds(width/2-53, height-140, 100, 32);
 		sFrame.getContentPane().add(scrape);
-		scrape.setEnabled(true);
 		scrape.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
 				try{
-					Scraper run = new Scraper(urlField.getText(), xPathField.getText(), fileNameField.getText());
-					run.scrape();
-				} catch(Exception f){
-					System.out.println("Incorrect fields or result not found");
+					scrape.setEnabled(false);							
+					finish.setText("Saving file...");
+					Timer clearText = new Timer(400, new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent e){
+							Scraper run = new Scraper(urlField.getText(), xPathField.getText(), fileNameField.getText());
+							run.scrape();
+							finish.setText("");
+							scrape.setEnabled(true);
+						}
+					});
+					Runtime.getRuntime().exec("explorer.exe /select, " + System.getProperty("user.home") + "\\" + fileNameField.getText() + ".txt");
+					clearText.start();
+				} catch(IOException f){
+					System.out.println("Could not open directory");
 				}
-
 			}
 		});
-		
+
 		JLabel directory = new JLabel("Your file will be written to your home directory");
+		directory.setHorizontalAlignment(SwingConstants.CENTER);
 		directory.setBounds(width/2-133, height-90, 260, 20);
 		sFrame.getContentPane().add(directory);
+
+		finish = new JLabel("");
+		finish.setHorizontalAlignment(SwingConstants.CENTER);
+		finish.setBounds(width/2-63, height-70, 120, 20);
+		sFrame.getContentPane().add(finish);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 474, 21);
@@ -126,6 +147,7 @@ public class ScraperAppWindow {
 
 		JMenuItem help = new JMenuItem("Help");
 		file.add(help);
+
 		help.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
